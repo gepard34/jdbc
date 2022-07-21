@@ -28,10 +28,10 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        String s = "DROP TABLE test.users";
+        String s = "DROP TABLE if exists users";
         try (Statement statement = Util.getConnection().createStatement()) {
             statement.executeUpdate(s);
-            System.out.println("Table was created");
+            System.out.println("Table was deleted");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -40,7 +40,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String s = "insert into test.users (name, lastName, age) values (?, ?, ?)";
+        String s = "insert into users (name, lastName, age) values (?, ?, ?)";
         try (PreparedStatement preparedStatement = Util.getConnection().prepareStatement(s)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
@@ -59,7 +59,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (PreparedStatement preparedStatement = Util.getConnection().prepareStatement(s)){
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-
+            System.out.println("Пользователь: " + id + " удален из БД");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -80,6 +80,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 user.setAge(resultSet.getByte("age"));
                 list.add(user);
             }
+            System.out.println(list);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
