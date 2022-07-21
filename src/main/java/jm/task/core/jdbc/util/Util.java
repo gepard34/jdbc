@@ -15,10 +15,11 @@ public class Util {
         try  {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
+            connection.setAutoCommit(false);
             System.out.println("Sucessfully connected");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } ;
+            e.printStackTrace();
+        }
     return connection;
     }
 }
